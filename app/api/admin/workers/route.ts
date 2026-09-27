@@ -61,9 +61,13 @@ export async function POST(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   const context = await getAdmin(request);
   if (!context) return NextResponse.json({ error: "Admin access required" }, { status: 403 });
-  const body = await request.json() as { id?: string; active?: boolean };
-  if (!body.id || typeof body.active !== "boolean") return NextResponse.json({ error: "Worker ID and active status are required." }, { status: 400 });
-  const { error } = await context.admin.from("profiles").update({ active: body.active }).eq("id", body.id).eq("role", "WORKER");
+  const body = await request.json() as { id?: string; active?: boolean; role?: "ADMIN" | "WORKER" };
+  if (!body.id || (typeof body.active !== "boolean" && body.role === undefined)) return NextResponse.json({ error: "User ID and a valid account change are required." }, { status: 400 });
+  if (body.id === context.user.id && (body.active === false || body.role === "WORKER")) return NextResponse.json({ error: "You cannot deactivate or demote your own admin account." }, { status: 400 });
+  const changes: { active?: boolean; role?: "ADMIN" | "WORKER" } = {};
+  if (typeof body.active === "boolean") changes.active = body.active;
+  if (body.role !== undefined) changes.role = body.role;
+  const { error } = await context.admin.from("profiles").update(changes).eq("id", body.id);
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
   return NextResponse.json({ ok: true });
 }
