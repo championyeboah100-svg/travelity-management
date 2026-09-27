@@ -2,12 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 :root { color-scheme: light; }
+:root.dark { color-scheme: dark; }
 * { box-sizing: border-box; }
 body { margin: 0; background: #f7f8f5; color: #102a43; font-family: Arial, sans-serif; }
+:root.dark body { background: #0f172a; color: #e2e8f0; }
+:root.dark .bg-white { background-color: #1e293b; }
+:root.dark .bg-cream\/95 { background-color: rgb(15 23 42 / 0.95); }
+:root.dark .bg-slate-50 { background-color: #1e293b; }
+:root.dark .bg-slate-100 { background-color: #334155; }
+:root.dark .text-slate-500, :root.dark .text-slate-600 { color: #cbd5e1; }
+:root.dark .border-slate-200, :root.dark .border-slate-100 { border-color: #475569; }
 button, input, select { font: inherit; }
 .card { @apply rounded-2xl border border-slate-200 bg-white shadow-sm; }
 .btn { @apply rounded-xl px-4 py-3 font-semibold transition active:scale-[.98]; }
 .btn-primary { @apply btn bg-teal text-white hover:bg-teal/90; }
 .btn-secondary { @apply btn bg-slate-100 text-ink hover:bg-slate-200; }
 .field { @apply w-full rounded-xl border border-slate-300 bg-white px-3 py-3 outline-none focus:border-teal focus:ring-2 focus:ring-teal/20; }
+:root.dark .field { background: #1e293b; border-color: #475569; color: #e2e8f0; }
 
